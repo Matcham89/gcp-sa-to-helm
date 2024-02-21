@@ -5,7 +5,7 @@
 # the repo name reflects the application name
 # clone the repo 
 # create a branch
-# pulling the service account information and populating it in helm-dev
+# pulling the service account information and populating it in helm
 # push the change
 # create a pull request with permission details
 
@@ -22,7 +22,7 @@ project_id="" # <<<<< populate the google cloud project
 
 owner="" # <<<<< populate the github owner
 
-branch_name="add-sa-to-helm-dev" # <<<<< populate the github chore branch
+branch_name="add-sa-to-helm" # <<<<< populate the github chore branch
 
 
 # run gcloud command to list service accounts and capture the output
@@ -89,13 +89,13 @@ for row in $(echo "${service_accounts}" | jq -r '.[] | @base64'); do
     cd "${sa_name}"
     git checkout -b $branch_name
 
-    # update helm-dev.yml file with roles
-    helm_values_file="helm-dev.yml"
+    # update helm.yml file with roles
+    helm_values_file="helm.yml"
     # build roles list from permissions
     roles=$(echo "${permissions}" | sed 's/, /\\n/g' | sed 's/^-\ roles\///' | sed 's/^roles\///' | sed '/^\s*$/d' | sed '1s/^role$//' | sed '/^\s*$/d' | sed 's/^/    - /')
     echo "$roles"
 
-    # append roles to the helm-dev.yml file
+    # append roles to the helm.yml file
     echo "" >> "${helm_values_file}"
     echo "project: $project_id" >> "${helm_values_file}"
     echo "" >> "${helm_values_file}"
@@ -107,15 +107,15 @@ for row in $(echo "${service_accounts}" | jq -r '.[] | @base64'); do
     # commit and push changes
     echo "performing commit and push"
     git add "${helm_values_file}"
-    git commit -m "Add roles to helm-dev.yml"
+    git commit -m "Add roles to helm.yml"
     git push --set-upstream origin $branch_name
 
     # create a pull request
-    pr_title="Add roles to helm-dev.yml for ${sa_name}"
+    pr_title="Add roles to helm.yml for ${sa_name}"
     pr_description="
 
 ## :spiral_notepad: What's being changed?
-adding the below roles to helm-dev:
+adding the below roles to helm:
 ${roles}
 
 

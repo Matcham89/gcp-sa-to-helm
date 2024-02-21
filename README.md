@@ -1,14 +1,14 @@
 ### Purpose: 
 
-This script will pull the active service account permissions based on repo name
+This script will pull the active service account permissions from GCP based on repo name
 
-* the repo name reflects the application name
+* pull permissions
 
 * clone the repo 
 
 * create a branch
 
-* pulling the service account information and populating it in helm-dev
+* populate helm values
 
 * push the change
 
@@ -16,6 +16,8 @@ This script will pull the active service account permissions based on repo name
 
 
 ### Requirements:
+
+* the repo name reflects the application name
 
 * access to google cloud platform - project 
 
